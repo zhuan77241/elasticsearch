@@ -27,7 +27,7 @@ GET /_cat/health?v&ts=false
 // CONSOLE
 // TEST[s/^/PUT twitter\n{"settings":{"number_of_replicas": 0}}\n/]
 
-比如：
+结果如下：
 
 [source,txt]
 --------------------------------------------------

@@ -44,7 +44,7 @@ GET /_cat/fielddata?v
 // CONSOLE
 // TEST[continued]
 
-比如：
+结果如下：
 
 [source,txt]
 --------------------------------------------------
@@ -64,7 +64,7 @@ GET /_cat/fielddata?v&fields=body
 // CONSOLE
 // TEST[continued]
 
-比如：
+结果如下：
 
 [source,txt]
 --------------------------------------------------

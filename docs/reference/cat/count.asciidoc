@@ -11,7 +11,7 @@ GET /_cat/count?v
 // TEST[setup:big_twitter]
 // TEST[s/^/POST test\/test\?refresh\n{"test": "test"}\n/]
 
-比如：
+结果如下：
 
 [source,txt]
 --------------------------------------------------
