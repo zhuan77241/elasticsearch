@@ -34,10 +34,6 @@
 
 --
 
-Below is an example of query clauses being used in query and filter context
-in the `search` API.  This query will match documents where all of the following
-conditions are met:
-
 下面是一个 `search` API 中，查询子句被使用在查询上下文和过滤上下文中的例子。
 这个查询会匹配满足下面所有条件的文档：
 
