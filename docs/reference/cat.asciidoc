@@ -62,6 +62,11 @@ node | n | node name
 --------------------------------------------------
 // TESTRESPONSE[s/[|]/[|]/ _cat]
 
+NOTE: `help` is not supported if any optional url parameter is used.
+For example `GET _cat/shards/twitter?help` or `GET _cat/indices/twi*?help`
+results in an error. Use `GET _cat/shards?help` or `GET _cat/indices?help`
+instead.
+
 [float]
 [[headers]]
 === 头部
@@ -82,8 +87,8 @@ GET /_cat/nodes?h=ip,port,heapPercent,name
 --------------------------------------------------
 // TESTRESPONSE[s/9300 27 sLBaIGK/\\d+ \\d+ .+/ _cat]
 
-你也可以使用简单的通配符来请求多个列 `/_cat/thread_pool?h=ip,bulk.*`
-获取所有头部（或别名）以 `bulk.` 开头。
+你也可以使用简单的通配符来请求多个列 `/_cat/thread_pool?h=ip,queue.*`
+获取所有头部（或别名）以 `queue.` 开头。
 
 [float]
 [[numeric-formats]]

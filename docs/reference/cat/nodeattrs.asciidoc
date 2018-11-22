@@ -9,15 +9,23 @@
 GET /_cat/nodeattrs?v
 --------------------------------------------------
 // CONSOLE
+// TEST[s/\?v/\?v&s=node,attr/]
+// Sort the resulting attributes so we can assert on them more easilly
 
 如下显示：
 
 [source,txt]
 --------------------------------------------------
 node    host      ip        attr     value
-EK_AsJb 127.0.0.1 127.0.0.1 testattr test
+...
+node-0 127.0.0.1 127.0.0.1 testattr test
+...
 --------------------------------------------------
-// TESTRESPONSE[s/EK_AsJb/.+/ _cat]
+// TESTRESPONSE[s/\.\.\.\n$/\n(.+ xpack\\.installed true\n)?\n/]
+// TESTRESPONSE[s/\.\.\.\n/(.+ ml\\..+\n)*/ _cat]
+// If xpack is not installed then neither ... with match anything
+// If xpack is installed then the first ... contains ml attributes
+// and the second contains xpack.installed=true
 
 前几列（ `node` ， `host` ， `ip` ）为你提供每个节点的基本信息 `attr` 和 `value` 提供节点自定义属性，每行一个。
 
@@ -42,15 +50,24 @@ EK_AsJb 127.0.0.1 127.0.0.1 testattr test
 GET /_cat/nodeattrs?v&h=name,pid,attr,value
 --------------------------------------------------
 // CONSOLE
+// TEST[s/,value/,value&s=node,attr/]
+// Sort the resulting attributes so we can assert on them more easilly
 
 显示如下：
 
 [source,txt]
 --------------------------------------------------
 name    pid   attr     value
-EK_AsJb 19566 testattr test
+...
+node-0 19566 testattr test
+...
 --------------------------------------------------
-// TESTRESPONSE[s/EK_AsJb/.+/ s/19566/\\d*/ _cat]
+// TESTRESPONSE[s/19566/\\d*/]
+// TESTRESPONSE[s/\.\.\.\n$/\n(.+ xpack\\.installed true\n)?\n/]
+// TESTRESPONSE[s/\.\.\.\n/(.+ ml\\..+\n)*/ _cat]
+// If xpack is not installed then neither ... with match anything
+// If xpack is installed then the first ... contains ml attributes
+// and the second contains xpack.installed=true
 
 [cols="<,<,<,<,<",options="header",subs="normal"]
 |=======================================================================
