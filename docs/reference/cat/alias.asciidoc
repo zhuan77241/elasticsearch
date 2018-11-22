@@ -52,4 +52,4 @@ alias4 test1 -      2            1,2
 
 输出显示 `alias2` 已经配置了一个过滤器，和 `alias3` 和 `alias4` 中的特定路由配置。
 
-如果您只想获取有关特定别名的信息，您可以以逗号分隔格式指定别名作为 URL 参数，例如，/_cat/aliases/aliases/alias1,alias2 。
+如果你只想获取有关特定别名的信息，你可以以逗号分隔格式指定别名作为 URL 参数，例如，/_cat/aliases/aliases/alias1,alias2 。

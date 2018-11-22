@@ -23,7 +23,7 @@ test1 3     p      127.0.0.1 _0               0          1            0  3kb    
 
 在前两列的输出信息中展示了索引名和分片数量。
 
-如果您只想获取某个特定索引的 segments 信息，可以在 URL 中添加索引名称，例如 `/_cat/segments/test` 。
+如果你只想获取某个特定索引的 segments 信息，可以在 URL 中添加索引名称，例如 `/_cat/segments/test` 。
 也可以查询多个索引如 `/_cat/segments/test,test1` 。
 
 
