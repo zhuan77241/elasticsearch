@@ -21,9 +21,9 @@ test1 3     p      127.0.0.1 _0               0          1            0  3kb    
 --------------------------------------------------
 // TESTRESPONSE[s/3kb/\\d+(\\.\\d+)?[mk]?b/ s/2042/\\d+/ _cat]
 
-输出显示了前两列中的索引名称和分片数字信息。
+在前两列的输出信息中展示了索引名和分片数量。
 
-如果您只想获取某个特定索引的 segments 信息，可以在URL中添加索引名称，例如 `/_cat/segments/test` 。
+如果您只想获取某个特定索引的 segments 信息，可以在 URL 中添加索引名称，例如 `/_cat/segments/test` 。
 也可以查询多个索引如 `/_cat/segments/test,test1` 。
 
 
@@ -31,7 +31,7 @@ test1 3     p      127.0.0.1 _0               0          1            0  3kb    
 
 prirep::        此 segment 是属于主分片还是副本分片。
 
-ip::            segment 所在分片的IP地址。
+ip::            segment 所在分片的 IP 地址。
 
 segment::       segment 名称，从 segment 生成时创建。该名称在内部用于在该 segment 所属分片的目录中生成文件名。
 

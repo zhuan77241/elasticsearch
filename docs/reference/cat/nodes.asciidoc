@@ -20,9 +20,9 @@ ip        heap.percent ram.percent cpu load_1m load_5m load_15m node.role master
 // TESTRESPONSE[s/65          99  42/\\d+ \\d+ \\d+/]
 // TESTRESPONSE[s/[*]/[*]/ s/mJw06l1/.+/ _cat]
 
-前几列（ `ip`, `heap.percent`, `ram.percent`, `cpu`, `load_*` ）告诉你你的节点在哪里，以便快速了解性能统计信息。
+前几列（ `ip`, `heap.percent`, `ram.percent`, `cpu`, `load_*` ）告诉你节点在哪里，以便快速了解性能统计信息。
 
-最后几列（ `node.role` ， `master` 和 `name` ）提供了辅助信息，这在查看整个群集时通常很有用，特别是大型群集。
+最后几列（ `node.role` ， `master` 和 `name` ）提供了辅助信息，这在查看整个集群时通常很有用，特别是大型集群。
 我有多少个 master-eligible 节点？
 
 `nodes` API 承认一个额外的 URL 参数 `full_id` ，接受 `true` 或者 `false`。

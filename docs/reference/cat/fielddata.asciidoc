@@ -1,7 +1,7 @@
 [[cat-fielddata]]
 == cat fielddata
 
-`fielddata` 显示集群中每个数据节点上fielddata当前正在使用多少堆内存。
+`fielddata` 显示了集群中每个数据节点上被 fielddata 正在使用的堆内存大小。
 
 
 ////

@@ -73,7 +73,7 @@ elasticsearch green           1         1      5   5    0    0        0         
 [[timestamp]]
 === Why the timestamp?
 
-当群集发生故障时，您通常使用 `health` 命令。
+当集群发生故障时，您通常使用 `health` 命令。
 在此期间，关联活动的访问日志文件，系统报警等非常重要。
 
 这里有两个输出：

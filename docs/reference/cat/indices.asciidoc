@@ -29,7 +29,7 @@ green  open   twitter2 nYFWZEO7TUiOjLQXBaYJpA   5   0          0            0   
 
 1. 由于此处显示的文档和已删除文档的数量均为 lucene 级别，因此它还包含所有隐藏文档（例如嵌套文档）。
 
-2. 要在Elasticsearch级别获得实际的文档数量，推荐的方法是使用 << cat-count >> 或者 << search-count >>
+2. 要在 Elasticsearch 级别获得实际的文档数量，推荐的方法是使用 <<cat-count>> 或者 <<search-count>>
 
 [float]
 [[pri-flag]]
