@@ -1,8 +1,7 @@
 [[query-dsl-query-string-query]]
 === Query String Query
 
-A query that uses a query parser in order to parse its content. Here is
-an example:
+一种使用查询解析器解析其内容的查询。这是一个例子：
 
 [source,js]
 --------------------------------------------------
@@ -18,8 +17,8 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-The `query_string` query parses the input and splits text around operators.
-Each textual part is analyzed independently of each other. For instance the following query:
+`query_string` 查询解析输入，并在操作符周围拆分文本。每一个拆分后的文本彼此独立地被解析。
+例如下面的查询：
 
 [source,js]
 --------------------------------------------------
@@ -35,25 +34,20 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-... will be splitted in `new`, `york` and `city` and each part is analyzed independently.
-When multiple fields are provided it is also possible to modify how the different
-field queries are combined inside each textual part using the `type` parameter.
-The possible modes are described <<multi-match-types, here>> and the default is `best_fields`.
+... 将被拆分为 `new`， `york` 和 `city`，并且每一部分被独立地解析。当有多个字段时，
+可以使用 `type` 参数来改变不同的字段被组合在每一个分割后的文本内部的方式。
+ <<multi-match-types, 这里>> 描述了可能的模式，默认是 `best_fields`。
 
-
-The `query_string` top level parameters include:
+`query_string` 最高级参数包括：
 
 [cols="<,<",options="header",]
 |=======================================================================
 |Parameter |Description
-|`query` |The actual query to be parsed. See <<query-string-syntax>>.
+|`query` |实际的查询将被解析。请参考 <<query-string-syntax>>。
 
-|`default_field` |The default field for query terms if no prefix field
-is specified. Defaults to the `index.query.default_field` index
-settings, which in turn defaults to `*`.
-`*` extracts all fields in the mapping that are eligible to term queries
-and filters the metadata fields. All extracted fields are then combined
-to build a query when no prefix field is provided.
+|`default_field` |如果没有指定前缀字段，默认是 `index.query.default_field` 的索引设置，
+默认是 `*`。`*` 会提取映射中符合词查询的所有字段，并过滤元数据字段。当没有前缀字段时，
+所有被提取的字段组合在一起构建一个查询。
 
 |`default_operator` |The default operator used if no explicit operator
 is specified. For example, with a default operator of `OR`, the query
