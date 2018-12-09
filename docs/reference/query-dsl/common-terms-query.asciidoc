@@ -161,9 +161,8 @@ GET /_search
 
 minimum_should_match
 
-通过使用附加的 `low_freq` 和 `high_freq` 参数，可以让低频词和高频词使用不同的
-<<query-dsl-minimum-should-match,`minimum_should_match`>>
-参数。以下是提供附加参数的例子（注意结构的变化）：
+通过使用附加的 `low_freq` 和 `high_freq` 参数，
+可以让低频词和高频词使用不同的参数。以下是提供附加参数的例子（注意结构的变化）：
 
 [source,js]
 --------------------------------------------------

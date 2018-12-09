@@ -61,7 +61,9 @@ GET /_search
 默认为 `*` 。这将会抽取 mapping 中符合 term 查询的所有字段，并过滤元数据字段。然后，
 所有被抽取的字段组合起来构建一个查询。
 
-WARNING: 有一个限制，一次查询的字段数量不能超过1024个。
+WARNING: If you have a huge number of fields, the above auto expansion might lead to
+querying a large number of fields which might cause performance issues. In future versions
+(stating in 7.0) there will be a limit of no more than 1024 fields that can be queried at once.
 
 [[multi-match-types]]
 [float]
@@ -79,8 +81,8 @@ WARNING: 有一个限制，一次查询的字段数量不能超过1024个。
 `cross_fields`::    使用相同的 `分析器` 处理这些字段，仿佛他们是一个大字段。
                     查找任一字段中的每个词。请参阅 <<type-cross-fields>> 。
 
-`phrase`::          在每一个字段上运行一个 `match_phrase` 查询，并且把每个字段的 `_score` 组合起来。
-                    请参阅 <<type-phrase>> 。
+`phrase`::          Runs a `match_phrase` query on each field and uses the  `_score`
+                    from the best field.  See <<type-phrase>>.
 
 `phrase_prefix`::   在每一个字段上运行一个 `match_phrase_prefix` 查询，并且把每个字段的 `_score` 组合起来。
                     请参阅 <<type-phrase>> 。

@@ -150,7 +150,7 @@ GET /_search
 
 上面的例子创建了一个布尔查询：
 
-`(ny OR (new AND york)) city)`
+`(ny OR (new AND york)) city`
 
 这会使用单词 `ny` 或者 连词 `new AND york` 匹配文档。默认情况下，
 参数 `auto_generate_synonyms_phrase_query` 被设置为 `true`。
