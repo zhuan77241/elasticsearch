@@ -34,107 +34,79 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-<<<<<<< HEAD
-... 将被拆分为 `new`， `york` 和 `city`，并且每一部分被独立地解析。当有多个字段时，
-可以使用 `type` 参数来改变不同的字段被组合在每一个分割后的文本内部的方式。
- <<multi-match-types, 这里>> 描述了可能的模式，默认是 `best_fields`。
-=======
-... will be split into `new york city` and `big apple` and each part is then
-analyzed independently by the analyzer configured for the field.
+... 将会被拆成 `new york city` 和 `big apple`两部分，
+然后每一部分根据为该字段配置的分析器独立地被分析。
 
-WARNING: Whitespaces are not considered operators, this means that `new york city`
-will be passed "as is" to the analyzer configured for the field. If the field is a `keyword`
-field the analyzer will create a single term `new york city` and the query builder will
-use this term in the query. If you want to query each term separately you need to add explicit
-operators around the terms (e.g. `new AND york AND city`).
+WARNING: 空格不会被视为运算符，这意味着 `new york city` 将会原样传给为该字段配置的分析器，
+如果这个字段是一个关键字字段，分析器将会把 `new york city` 作为一个单独的词，
+并且查询构造器将会在查询中使用这个词。如果你想分别查询每一个词，你需要在词之间加上显示的运算符
+（例如： `new AND york AND city`）
 
-When multiple fields are provided it is also possible to modify how the different
-field queries are combined inside each textual part using the `type` parameter.
-The possible modes are described <<multi-match-types, here>> and the default is `best_fields`.
->>>>>>> dcd4667e955666837e2cd9b6177ffb9ebfdcc249
+当提供多个字段的时候，可以通过 `type` 参数来实现不同效果的查询。
+可能的方式在 <<multi-match-types, 这里>> 有描述，默认是 `best_fields` 。
 
 `query_string` 最高级参数包括：
 
 [cols="<,<",options="header",]
 |=======================================================================
-|Parameter |Description
+|参数 |描述
 |`query` |实际的查询将被解析。请参考 <<query-string-syntax>>。
 
 |`default_field` |如果没有指定前缀字段，默认是 `index.query.default_field` 的索引设置，
-默认是 `*`。`*` 会提取映射中符合词查询的所有字段，并过滤元数据字段。当没有前缀字段时，
+默认是 * 。`*` 会提取映射中符合词查询的所有字段，并过滤元数据字段。当没有前缀字段时，
 所有被提取的字段组合在一起构建一个查询。
 
-|`default_operator` |The default operator used if no explicit operator
-is specified. For example, with a default operator of `OR`, the query
-`capital of Hungary` is translated to `capital OR of OR Hungary`, and
-with default operator of `AND`, the same query is translated to
-`capital AND of AND Hungary`. The default value is `OR`.
+|`default_operator` |如果没有显示的指定运算符，则使用默认的运算符。例如，使用 `OR` 作为默认的运算符，
+ `capital of Hungary` 这个查询会被替换成 `capital OR of OR Hungary` ，
+ 使用 `AND` 作为默认的运算符，则上面的查询将会被替换成 `capital AND of AND Hungary` 。
+ 默认是 `OR` 。
 
-|`analyzer` |The analyzer name used to analyze the query string.
+|`analyzer` |用于分析查询字符串的分析器的名称。
 
-|`quote_analyzer` |The name of the analyzer that is used to analyze
-quoted phrases in the query string. For those parts, it overrides other
-analyzers that are set using the `analyzer` parameter or the
-<<search-quote-analyzer,`search_quote_analyzer`>> setting.
+|`quote_analyzer` |用于分析查询字符串中引用短语的分析器的名称。对于这些部分，
+它会覆盖其他使用了 `analyzer` 这个参数或者 <<search-quote-analyzer,`search_quote_analyzer`>>
+配置的分析器。
 
-|`allow_leading_wildcard` |When set, `*` or `?` are allowed as the first
-character. Defaults to `true`.
+|`allow_leading_wildcard` |当设置 * 或者 `?` 通配符是否被允许作为第一个字符的时候。默认是 `true` 。
 
-|`enable_position_increments` |Set to `true` to enable position
-increments in result queries. Defaults to `true`.
+|`enable_position_increments` |设置为 `true` 可以在结果查询用启用位置增量。默认是 `true` 。
 
-|`fuzzy_max_expansions` |Controls the number of terms fuzzy queries will
-expand to. Defaults to `50`
+|`fuzzy_max_expansions` |控制模糊查询可被扩展到的最大词数，默认 `50` 。
 
-|`fuzziness` |Set the fuzziness for fuzzy queries. Defaults
-to `AUTO`. See <<fuzziness>> for allowed settings.
+|`fuzziness` |设置模糊查询的模糊性。默认是 `AUTO` 。允许的设置，参阅 <<fuzziness>> 。
 
-|`fuzzy_prefix_length` |Set the prefix length for fuzzy queries. Default
-is `0`.
+|`fuzzy_prefix_length` |设置模糊查询时的前缀长度。默认是 `0` 。
 
-|`fuzzy_transpositions` |Set to `false` to disable fuzzy transpositions (`ab` -> `ba`).
-Default is `true`.
+|`fuzzy_transpositions` |设置为 `false` 以禁用模糊转置 (`ab` -> `ba`) 。默认是 `true` 。
 
-|`phrase_slop` |Sets the default slop for phrases. If zero, then exact
-phrase matches are required. Default value is `0`.
+|`phrase_slop` |设置短语的默认间隔。如果是0，则需要精确匹配短语。默认是 `0` 。
 
-|`boost` |Sets the boost value of the query. Defaults to `1.0`.
+|`boost` |设置查询的权重值。默认 `1.0` 。
 
-|`auto_generate_phrase_queries` |Defaults to `false`.
+|`auto_generate_phrase_queries` |默认 `false` 。
 
-|`analyze_wildcard` |By default, wildcards terms in a query string are
-not analyzed. By setting this value to `true`, a best effort will be
-made to analyze those as well.
+|`analyze_wildcard` |默认情况下，不分析查询字符串中的通配符。通过把这个值设为 `true` ，
+将会尽可能的分析这些通配符。
 
-|`max_determinized_states` |Limit on how many automaton states regexp
-queries are allowed to create.  This protects against too-difficult
-(e.g. exponentially hard) regexps.  Defaults to 10000.
+|`max_determinized_states` |限制正则表达式查询时创建自动机状态的数量。
+这可以防止太难（例如：指数级难度）的正则表达式。默认10000。
 
-|`minimum_should_match` |A value controlling how many "should" clauses
-in the resulting boolean query should match. It can be an absolute value
-(`2`), a percentage (`30%`) or a
-<<query-dsl-minimum-should-match,combination of
-both>>.
+|`minimum_should_match` |在布尔查询结果中，控制多少个 "should" 子句将被匹配。
+它可能是一个绝对值（`2`），一个百分比，或者一个 <<query-dsl-minimum-should-match,两者的组合>> 。
 
-|`lenient` |If set to `true` will cause format based failures (like
-providing text to a numeric field) to be ignored.
+|`lenient` | 如果设置为 `true` ，将会忽略掉类型不匹配的异常（如向数字字段提供文本）。
 
-|`time_zone` | Time Zone to be applied to any range query related to dates. See also
-http://www.joda.org/joda-time/apidocs/org/joda/time/DateTimeZone.html[JODA timezone].
+|`time_zone` | 时区将会被应用于任何和日期相关的范围查询。也可参阅
+http://www.joda.org/joda-time/apidocs/org/joda/time/DateTimeZone.html[JODA timezone]。
 
-|`quote_field_suffix` | A suffix to append to fields for quoted parts of
-the query string. This allows to use a field that has a different analysis chain
-for exact matching. Look <<mixing-exact-search-with-stemming,here>> for a
-comprehensive example.
+|`quote_field_suffix` | 附加到查询字符串的引用部分的字段的后缀。这允许使用具有不同分析链的字段进行精确匹配。
+在 <<mixing-exact-search-with-stemming,这里>> 查看一个全面的例子。
 
-|`auto_generate_synonyms_phrase_query` |Whether phrase queries should be automatically generated for multi terms synonyms.
-Defaults to `true`.
+|`auto_generate_synonyms_phrase_query` |是否应该为多个同义词自动生成短语查询。默认 `true` 。
 
-|`all_fields` | deprecated[6.0.0, set `default_field` to `*` instead]
-Perform the query on all fields detected in the mapping that can
-be queried. Will be used by default when the `_all` field is disabled and no
-`default_field` is specified (either in the index settings or in the request
-body) and no `fields` are specified.
+|`all_fields` | 已废弃【6.0.0, `default_field` 被 * 代替】对可以查询的映射中检测到的所有字段执行查询。
+当 `_all` 字段被禁用，并且（在索引设置或者请求体中）没有指定 `default_field` ，也没有指定 `fields` 时，
+`all_fields` 将默认被使用。
 
 |=======================================================================
 
