@@ -110,33 +110,26 @@ http://www.joda.org/joda-time/apidocs/org/joda/time/DateTimeZone.html[JODA timez
 
 |=======================================================================
 
-When a multi term query is being generated, one can control how it gets
-rewritten using the
-<<query-dsl-multi-term-rewrite,rewrite>>
-parameter.
+在生成一个多词查询时，可以使用 <<query-dsl-multi-term-rewrite,重写>> 参数控制如何重写它。
 
 [float]
 ==== Default Field
 
-When not explicitly specifying the field to search on in the query
-string syntax, the `index.query.default_field` will be used to derive
-which field to search on. If the `index.query.default_field` is not specified,
-the `query_string` will automatically attempt to determine the existing fields in the index's
-mapping that are queryable, and perform the search on those fields. Note that this will not
-include nested documents, use a nested query to search those documents.
+如果没有在查询字符串语法中明确地指定要搜索的字段，将会使用 `index.query.default_field`
+的配置，如果没有配置 `index.query.default_field` ，
+`query_string` 将会自动地尝试确定索引映射中可查询的现有字段，并对这些字段执行搜索。请注意，
+这将不包括嵌套文档，
 
 [float]
 ==== Multi Field
 
-The `query_string` query can also run against multiple fields. Fields can be
-provided via the `"fields"` parameter (example below).
+`query_string` 也能运行多个字段的查询。通过 `"fields"` 参数设置字段（下面是例子）。
 
-The idea of running the `query_string` query against multiple fields is to
-expand each query term to an OR clause like this:
+多字段的 `query_string` 查询把每一个查询项扩展为一个OR子句，如下所示：
 
     field1:query_term OR field2:query_term | ...
 
-For example, the following query
+例如，下面的查询
 
 [source,js]
 --------------------------------------------------
@@ -152,7 +145,7 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-matches the same words as
+相当于下面的查询
 
 
 [source,js]
@@ -168,9 +161,8 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-Since several queries are generated from the individual search terms,
-combining them is automatically done using a `dis_max` query with a tie_breaker.
-For example (the `name` is boosted by 5 using `^5` notation):
+由于从单个搜索项生成了多个查询，因此使用带有tie_breaker的 `dis_max` 查询自动地组合它们。
+例如（ `name` 使用 `^5` 符号表示增强5）
 
 [source,js]
 --------------------------------------------------
@@ -187,10 +179,8 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-Simple wildcard can also be used to search "within" specific inner
-elements of the document. For example, if we have a `city` object with
-several fields (or inner object with fields) in it, we can automatically
-search on all "city" fields:
+简单的通配符也能用于搜索特定的内部文档元素。例如，如果我们有一个 `city` 对象，
+它包含多个字段（或者包含多个字段的内部对象），我们能够自动地搜索所有的 "city" 字段：
 
 [source,js]
 --------------------------------------------------
@@ -206,9 +196,8 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-Another option is to provide the wildcard fields search in the query
-string itself (properly escaping the `*` sign), for example:
-`city.\*:something`:
+另一种选择是查询字符串本身提供通配符字段搜索（正确地转义 `*` 符号），
+例如：`city.\*:something`：
 
 [source,js]
 --------------------------------------------------
@@ -223,27 +212,22 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-NOTE: Since `\` (backslash) is a special character in json strings, it needs to
-be escaped, hence the two backslashes in the above `query_string`.
+NOTE: 由于 `\` （反斜杠）在json串中是一个特殊字符，因此需要对其转义，
+因此上面 `query_string` 中有两个反斜杠。
 
-When running the `query_string` query against multiple fields, the
-following additional parameters are allowed:
+对于多字段的 `query_string` 查询，允许使用以下的附加参数：
 
 [cols="<,<",options="header",]
 |=======================================================================
-|Parameter |Description
+|参数 |描述
 
-|`type` |How the fields should be combined to build the text query.
-See <<multi-match-types, types>> for a complete example.
-Defaults to `best_fields`
+|`type` |应该如何组合字段以构建文本查询。完整示例，请参阅 <<multi-match-types, types>> 。
+默认是 `best_fields`
 
-|`tie_breaker` |The disjunction max tie breaker for multi fields.
-Defaults to `0`
+|`tie_breaker` |这个参数的意义是将其他query的分数也考虑进去，默认是 `0`
 |=======================================================================
 
-The fields parameter can also include pattern based field names,
-allowing to automatically expand to the relevant fields (dynamically
-introduced fields included). For example:
+字段参数也能包含基于通配符的字段名称，允许自动地扩展到相关字段（包括动态引入的字段）。例如：
 
 [source,js]
 --------------------------------------------------
@@ -262,13 +246,13 @@ GET /_search
 [float]
 ==== Synonyms
 
-The `query_string` query supports multi-terms synonym expansion with the <<analysis-synonym-graph-tokenfilter,
-synonym_graph>> token filter. When this filter is used, the parser creates a phrase query for each multi-terms synonyms.
-For example, the following synonym: `"ny, new york" would produce:`
+`query_string` 支持使用 <<analysis-synonym-graph-tokenfilter,synonym_graph>>
+标记过滤器进行多项同义词扩展。使用这个过滤器的时候，解析器会为每一个多项同义词创建一个短语查询。
+例如，以下同义词： `"ny, new york" 将产生：`
 
 `(ny OR ("new york"))`
 
-It is also possible to match multi terms synonyms with conjunctions instead:
+也可以将多项同义词与连词相匹配：
 
 [source,js]
 --------------------------------------------------
@@ -285,11 +269,11 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-The example above creates a boolean query:
+上面的例子创建了一个布尔查询：
 
 `(ny OR (new AND york)) city)`
 
-that matches documents with the term `ny` or the conjunction `new AND york`.
-By default the parameter `auto_generate_synonyms_phrase_query` is set to `true`.
+使用词 `ny` 或者连词 `new AND york` 匹配文档的布尔查询。默认情况下，
+参数 `auto_generate_synonyms_phrase_query` 设置为 `true`。
 
 include::query-string-syntax.asciidoc[]
