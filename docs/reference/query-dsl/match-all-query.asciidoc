@@ -1,5 +1,5 @@
 [[query-dsl-match-all-query]]
-== Match All Query
+== 全匹配查询
 
 这是最简单的查询，它会匹配所有的文档，并给所有这些文档 `1.0` 的评分。
 [source,js]
@@ -27,7 +27,7 @@ GET /_search
 
 [[query-dsl-match-none-query]]
 [float]
-== Match None Query
+== 无匹配查询
 
 这个查询和 `match_all` 查询正好相反，它不会匹配任何文档。
 [source,js]

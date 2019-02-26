@@ -1,5 +1,5 @@
 [[query-dsl-query-string-query]]
-=== Query String Query
+=== 查询字符串查询
 
 一种使用查询解析器解析其内容的查询。这是一个例子：
 
@@ -113,7 +113,7 @@ http://www.joda.org/joda-time/apidocs/org/joda/time/DateTimeZone.html[JODA timez
 在生成一个多词查询时，可以使用 <<query-dsl-multi-term-rewrite,重写>> 参数控制如何重写它。
 
 [float]
-==== Default Field
+==== 默认字段
 
 如果没有在查询字符串语法中明确地指定要搜索的字段，将会使用 `index.query.default_field`
 的配置，如果没有配置 `index.query.default_field` ，
@@ -121,7 +121,7 @@ http://www.joda.org/joda-time/apidocs/org/joda/time/DateTimeZone.html[JODA timez
 这将不包括嵌套文档，
 
 [float]
-==== Multi Field
+==== 多字段
 
 `query_string` 也能运行多个字段的查询。通过 `"fields"` 参数设置字段（下面是例子）。
 
@@ -244,7 +244,7 @@ GET /_search
 // CONSOLE
 
 [float]
-==== Synonyms
+==== 同义词
 
 `query_string` 支持使用 <<analysis-synonym-graph-tokenfilter,synonym_graph>>
 标记过滤器进行多项同义词扩展。使用这个过滤器的时候，解析器会为每一个多项同义词创建一个短语查询。

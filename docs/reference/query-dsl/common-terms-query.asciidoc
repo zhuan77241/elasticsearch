@@ -1,5 +1,5 @@
 [[query-dsl-common-terms-query]]
-=== Common Terms Query
+=== 常用词查询
 
 常用词查询是一种现代的停用词替代方案，它提升了搜索结果的精确度和召回率（通过把停用词考虑进去），
 而不会牺牲性能。

@@ -1,5 +1,5 @@
 [[query-dsl-match-query-phrase-prefix]]
-=== Match Phrase Prefix Query
+=== 匹配短语前缀查询
 
 `match_phrase_prefix` 和 `match_phrase` 相同，除了它允许对文本的最后一个词做前缀匹配外。
 例如：
@@ -55,6 +55,6 @@ GET /_search
 问题是前50个单词可能不包含单词 `fox` ，所以短语 `quick brown fox` 将不会被找到。
 这通常不是问题，随着用户输入更多的字符，直到他们搜索的词出现。
 
-对于即时搜索更好的解决方案，看<<search-suggesters-completion,completion suggester>>和
+对于即时搜索更好的解决方案，看 <<search-suggesters-completion,completion suggester>> 和
 {defguide}/_index_time_search_as_you_type.html[Index-Time Search-as-You-Type]。
 ===================================================
