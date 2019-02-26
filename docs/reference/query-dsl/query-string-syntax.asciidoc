@@ -1,19 +1,16 @@
 [[query-string-syntax]]
 
-==== Query string syntax
+==== 查询字符串语法
 
-The query string ``mini-language'' is used by the
-<<query-dsl-query-string-query>> and by the
-`q` query string parameter in the <<search-search,`search` API>>.
-查询字符串的 ``微型语言'' 被用于 <<query-dsl-query-string-query>>
-和 <<search-search,`search` API>> 查询字符串参数 `q` 。
+在 <<search-search,`search` API>> 中被用于 <<query-dsl-query-string-query>>
+和 `q` 查询字符串参数的 ``微型语言'' 。
 
 查询字符串被解析成一系列的词和运算符。一个词可以是单个的词 -- `quick` 或者 `brown` --
 或者一个被双引号括起来的短语 -- `"quick brown"` ，这会以短语中单词的顺序搜索所有的单词。
 
 允许自定义搜索 -- 可用的选项说明如下。
 
-===== Field names
+===== 字段名
 
 如 <<query-dsl-query-string-query>> 所述， `default_field` 会作为搜索词被搜索，
 但可以在查询语法中指定其他字段：
@@ -40,7 +37,7 @@ The query string ``mini-language'' is used by the
 
     _exists_:title
 
-===== Wildcards
+===== 通配符
 
 通配符搜索能够在单个词上运行，使用 `?` 代替一个单个字符，使用 `*` 代替0个或更多个字符：
 
@@ -78,7 +75,7 @@ The query string ``mini-language'' is used by the
 通过将 `analyze_wildcard` 设置为真，将分析以 `*` 结尾的查询，
 并通过确保第一个N-1标记的精确匹配以及最后一个标记的前缀匹配，从不同的标记构建一个布尔查询。
 
-===== Regular expressions
+===== 正则表达式
 
 正则表达式模式可以通过将它们包装在正斜杠（`"/"`）中来嵌入查询字符串中：
 
@@ -96,7 +93,7 @@ The query string ``mini-language'' is used by the
 谨慎使用！
 =======
 
-===== Fuzziness
+===== 模糊
 
 我们可以使用 ``fuzzy'' 运算符搜索与我们的搜索词相似但不完全相同的词：
 
@@ -172,7 +169,7 @@ http://en.wikipedia.org/wiki/Damerau-Levenshtein_distance[Damerau-Levenshtein di
 查询字符串的范围解析可能很复杂且容易出错。
 使用显式的 <<query-dsl-range-query,`范围` 查询>>更可靠。
 
-===== Boosting
+===== 提升
 
 使用提升运算符 `^` 让一个词比另一个词更相关。例如，如果我们想查找关于foxes的所有文档，
 但是我们对quick foxes特别感兴趣：
@@ -185,7 +182,7 @@ http://en.wikipedia.org/wiki/Damerau-Levenshtein_distance[Damerau-Levenshtein di
 
     "john smith"^2   (foo bar)^4
 
-===== Boolean operators
+===== 布尔运算符
 
 默认情况下，只要一个词匹配，所有词都是可选的。
 搜索 `foo bar baz` 将找到包含一个或者多个 `foo` 或者 `bar` 或者 `baz` 的任何文档。
