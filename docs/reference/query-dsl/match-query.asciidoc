@@ -1,5 +1,5 @@
 [[query-dsl-match-query]]
-=== Match Query
+=== 匹配查询
 
 `match` 查询接受文本/数值/日期，分析他们并构造一个查询。例如：
 
@@ -19,7 +19,7 @@ GET /_search
 注意， `message` 是一个字段的名字，你能够用任意字段的名字替代它。
 
 [[query-dsl-match-query-boolean]]
-==== match
+==== 匹配
 
 `match` 查询是 `boolean` 类型的。这意味着文本会被分析，并且分析过程会根据提供的文本构建一个布尔查询。
   `operator` 标志可以设置 `or` 或者 `and` 来控制布尔子句（默认为 `or`）。
@@ -32,7 +32,7 @@ GET /_search
  比如尝试用一个文本字符串查询一个数字字段。 `lenient` 参数默认是 `false`。
 
 [[query-dsl-match-query-fuzziness]]
-===== Fuzziness
+===== 模糊
 
 `fuzziness` 允许基于被查询的字段的类型模糊匹配。有关被允许的设置，请看 <<fuzziness>> 。
 
@@ -85,7 +85,7 @@ GET /_search
 // CONSOLE
 
 [[query-dsl-match-query-cutoff]]
-===== Cutoff frequency
+===== 截止频率
 
 match 查询支持 `cutoff_frequency` ，它允许指定一个绝对的或者相对的文档频率，
 其中高频词会被移动到一个可选的子查询中，并且如果是 `or`

@@ -1,7 +1,7 @@
 [[query-dsl-multi-match-query]]
-=== Multi Match Query
+=== 多匹配查询
 
-`multi_match` 查询建立在 <<query-dsl-match-query,`match` query>> 之上，允许多字段查询：
+`multi_match` 查询建立在 <<query-dsl-match-query,`match` 查询>> 之上，允许多字段查询：
 
 [source,js]
 --------------------------------------------------
@@ -20,7 +20,7 @@ GET /_search
 <2> 被查询的字段。
 
 [float]
-==== `fields` and per-field boosting
+==== `字段` 和字段提升
 
 字段可以用通配符指定，例如：
 
@@ -58,18 +58,17 @@ GET /_search
 <1> `subject` 字段是 `message` 字段的三倍权重。默认权重为1。
 
 如果没有 `fields` ，`multi_match` 查询默认为 `index.query.default_field` 的索引设置，
-默认为 `*` 。这将会抽取 mapping 中符合 term 查询的所有字段，并过滤元数据字段。然后，
+默认为 `*` 。这将会抽取映射中符合词查询的所有字段，并过滤元数据字段。然后，
 所有被抽取的字段组合起来构建一个查询。
 
-WARNING: If you have a huge number of fields, the above auto expansion might lead to
-querying a large number of fields which might cause performance issues. In future versions
-(stating in 7.0) there will be a limit of no more than 1024 fields that can be queried at once.
+WARNING: 如果有大量的字段，上述的自动扩展可能导致查询大量的字段，这可能导致性能问题。
+在未来的版本中（在7.0中有描述），一次最多可以查询1024个字段。
 
 [[multi-match-types]]
 [float]
-==== `multi_match` 查询的类型：
+==== `多匹配` 查询的类型：
 
-`multi_match` 查询在内部执行的方式取决于 `type` 参数，它可以被设置为：
+`多匹配` 查询在内部执行的方式取决于 `type` 参数，它可以被设置为：
 
 [horizontal]
 `best_fields`::     (*默认*) 查找与任一字段匹配的文档，但是使用最优字段的 `_score` 。
@@ -88,12 +87,12 @@ querying a large number of fields which might cause performance issues. In futur
                     请参阅 <<type-phrase>> 。
 
 [[type-best-fields]]
-==== `best_fields`
+==== `最优字段`
 
-当你正在搜索同一个字段中含有多个单词的最优查找时，这个 `best_fields` 最有用。
+当你正在搜索同一个字段中含有多个单词的最优查找时，这个 `最优字段` 最有用。
 例如，``brown fox'' 单独在一个字段中比 ``brown'' 在一个字段中和 ``fox'' 在另一个字段中更有意义。
 
-`best_fields` 会为每一个字段生成一个 <<query-dsl-match-query,`match` query>> ，
+`最优字段` 会为每一个字段生成一个 <<query-dsl-match-query,`match` 查询>> ，
  并把他们封装到一个 <<query-dsl-dis-max-query,`dis_max`>> 查询中，以找到单个最优的匹配字段。
  例如，这个查询：
 
@@ -132,7 +131,7 @@ GET /_search
 --------------------------------------------------
 // CONSOLE
 
-通常， `best_fields` 使用单个最优匹配字段的评分，但是如果指定了 `tie_breaker` ，
+通常， `最优字段` 使用单个最优匹配字段的评分，但是如果指定了 `tie_breaker` ，
 它会按照下面的方式计算评分：
 
   * 最优匹配字段的评分
@@ -235,9 +234,9 @@ and `cutoff_frequency`，这些参数的含义和 <<query-dsl-match-query,match 
 请参阅 <<operator-min>> 。
 
 [[type-phrase]]
-==== `phrase` and `phrase_prefix`
+==== `短语` 和 `短语前缀`
 
-`phrase` 和 `phrase_prefix` 的行为和 <<type-best-fields>> 很像，
+`短语` 和 `短语前缀` 的行为和 <<type-best-fields>> 很像，
 但是它们会使用一个 `match_phrase` 或者 `match_phrase_prefix` 查询而不是 `match` 查询。
 
 这个查询：
@@ -358,7 +357,7 @@ GET /_search
 `lenient`, `zero_terms_query` and `cutoff_frequency`，
 这些参数的含义和 <<query-dsl-match-query, match query>> 一样。
 
-===== `cross_field` and analysis
+===== `cross_field` 和 分析
 
 `cross_field` 只能在有相同分析器的字段上以词中心的模式工作。像上面例子里那样，
 有相同分析器的字段被分到一个组。如果有多个组，他们用 `bool` 查询结合起来。
@@ -473,7 +472,7 @@ GET /_search
 
 [IMPORTANT]
 [[crossfields-fuzziness]]
-.`cross_fields` and `fuzziness`
+.`cross_fields` 和 `fuzziness`
 ===================================================
 `cross_fields` 不能使用 `fuzziness` 参数。
 ===================================================

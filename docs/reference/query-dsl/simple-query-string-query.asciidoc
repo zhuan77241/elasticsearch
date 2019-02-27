@@ -1,5 +1,5 @@
 [[query-dsl-simple-query-string-query]]
-=== Simple Query String Query
+=== 简单查询字符串查询
 
 使用 SimpleQueryParser 解析上下文的查询。与常规的 `query_string` 查询不同，
 `simple_query_string` 查询绝不会抛出异常，并丢弃查询的无效部分。这是一个例子：
@@ -65,7 +65,7 @@ GET /_search
 |=======================================================================
 
 [float]
-===== Simple Query String Syntax
+===== 简单查询字符串语法
 `simple_query_string` 支持以下特殊字符：
 
 * `+` 表示 AND 操作
@@ -101,14 +101,14 @@ GET /_search
 将不会返回包含 "baz" 的文档。
 
 [float]
-==== Default Field
+==== 默认字段
 在查询字符串语法中，当没有明确指定要搜索的字段时，将会从 `index.query.default_field`
 获取要搜索的字段。默认为 `*` ，查询将自动尝试确定索引映射中可查询的现有字段，
 并在这些字段上执行搜索。
 
 
 [float]
-==== Multi Field
+==== 多字段
 字段参数也可以包含基于模式的字段名称，允许自动扩展到相关字段（包括动态引入的字段）。例如：
 
 [source,js]
@@ -126,7 +126,7 @@ GET /_search
 // CONSOLE
 
 [float]
-==== Flags
+==== 标记
 `simple_query_string` 支持使用多种标记来指定哪些解析功能应该启用。
 用 `|` 来分割使用的标记参数：
 
@@ -148,7 +148,7 @@ GET /_search
 `PRECEDENCE`, `ESCAPE`, `WHITESPACE`, `FUZZY`, `NEAR`, and `SLOP`.
 
 [float]
-==== Synonyms
+==== 同义词
 
 `simple_query_string` 查询支持使用 <<analysis-synonym-graph-tokenfilter,
 synonym_graph>> 令牌过滤器进行多项同义词扩展。使用这个过滤器时，
