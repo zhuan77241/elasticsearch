@@ -1,14 +1,11 @@
 [[tune-for-disk-usage]]
-== Tune for disk usage
+== 磁盘调优方式
 
 [float]
-=== Disable the features you do not need
+=== 禁用您不需要的功能
 
-By default Elasticsearch indexes and adds doc values to most fields so that they
-can be searched and aggregated out of the box. For instance if you have a numeric
-field called `foo` that you need to run histograms on but that you never need to
-filter on, you can safely disable indexing on this field in your
-<<mappings,mappings>>:
+默认情况下，Elasticsearch 会对大多数字段进行索引并添加 doc values，以便可以直接搜索和聚合它们。 例如，如果你有一个名为`foo`的数字字段，你需要运行直方图但你永远不需要过滤，
+你可以安全地禁用你的这个字段的索引通过 <<mappings,mappings>>:
 
 [source,js]
 --------------------------------------------------
@@ -28,10 +25,8 @@ PUT index
 --------------------------------------------------
 // CONSOLE
 
-<<text,`text`>> fields store normalization factors in the index in order to be
-able to score documents. If you only need matching capabilities on a `text`
-field but do not care about the produced scores, you can configure Elasticsearch
-to not write norms to the index:
+<<text,`text`>> 字段存储索引中的规范化因子，以便能够对文档进行评分。 如果你只需要 `text` 字段的匹配功能
+而不关心产生的分数，您可以配置 Elasticsearch 不向索引写入 norms ：
 
 [source,js]
 --------------------------------------------------
@@ -51,10 +46,9 @@ PUT index
 --------------------------------------------------
 // CONSOLE
 
-<<text,`text`>> fields also store frequencies and positions in the index by
-default. Frequencies are used to compute scores and positions are used to run
-phrase queries. If you do not need to run phrase queries, you can tell
-Elasticsearch to not index positions:
+<<text,`text`>> 字段默认存储索引中的频率和位置。
+频率用于计算分数，位置用于运行短语查询。
+如果您不需要运行短语查询，则可以告诉 Elasticsearch 不用索引位置：
 
 [source,js]
 --------------------------------------------------
@@ -74,10 +68,7 @@ PUT index
 --------------------------------------------------
 // CONSOLE
 
-Furthermore if you do not care about scoring either, you can configure
-Elasticsearch to just index matching documents for every term. You will
-still be able to search on this field, but phrase queries will raise errors
-and scoring will assume that terms appear only once in every document.
+此外，如果你不关心评分，你可以配置 Elasticsearch 只为每个词项索引匹配文档。 您仍然可以搜索此字段，但短语查询会引发错误，评分将假定词项在每个文档中只出现一次。
 
 [source,js]
 --------------------------------------------------
@@ -99,19 +90,14 @@ PUT index
 // CONSOLE
 
 [float]
-=== Don't use default dynamic string mappings
+=== 不要使用默认动态字符串映射
 
-The default <<dynamic-mapping,dynamic string mappings>> will index string fields
-both as <<text,`text`>> and <<keyword,`keyword`>>. This is wasteful if you only
-need one of them. Typically an `id` field will only need to be indexed as a
-`keyword` while a `body` field will only need to be indexed as a `text` field.
+默认的 <<dynamic-mapping,dynamic string mappings>> 将字符串字段同时索引为 <<text,`text`>> 和 <<keyword,`keyword`>>。
+如果您只需要其中一个，那就太浪费了。通常，`id` 字段只需要被索引为 `keyword`，而 `body` 字段只需要被索引为 `text` 字段。
 
-This can be disabled by either configuring explicit mappings on string fields
-or setting up dynamic templates that will map string fields as either `text`
-or `keyword`.
+可以通过在字符串字段上配置显式映射或设置将字符串字段映射为 `text` 或 `keyword` 的动态模板来禁用此功能。
 
-For instance, here is a template that can be used in order to only map string
-fields as `keyword`:
+例如一下这个模板，可以用于仅将字符串字段映射为 `keyword`：
 
 [source,js]
 --------------------------------------------------
@@ -136,70 +122,55 @@ PUT index
 // CONSOLE
 
 [float]
-=== Watch your shard size
+=== 观察您的分片大小
 
 Larger shards are going to be more efficient at storing data. To increase the size of your shards, you can decrease the number of primary shards in an index by <<indices-create-index,creating indices>> with less primary shards, creating less indices (e.g. by leveraging the <<indices-rollover-index,Rollover API>>), or modifying an existing index using the <<indices-shrink-index,Shrink API>>.
+较大的分片在存储数据方面会更有效。
+要增加分片的大小，可以通过 <<indices-create-index,creating indices>> 来减少索引中主分片的数量，
+创建较少分片的索引（例如，通过利用 <<indices-rollover-index,Rollover API>> ），或使用 <<indices-shrink-index,Shrink API>> 修改现有索引。
 
-Keep in mind that large shard sizes come with drawbacks, such as long full recovery times.
-
-[float]
-=== Disable `_all`
-
-The <<mapping-all-field,`_all`>> field indexes the value of all fields of a
-document and can use significant space. If you never need to search against all
-fields at the same time, it can be disabled.
+请记住，大的分片也有缺点，例如恢复分片时间会更长。
 
 [float]
-=== Disable `_source`
+=== 关闭 `_all`
 
-The <<mapping-source-field,`_source`>> field stores the original JSON body of the document. If you don’t need access to it you can disable it. However, APIs that needs access to `_source` such as update and reindex won’t work.
-
-[float]
-=== Use `best_compression`
-
-The `_source` and stored fields can easily take a non negligible amount of disk
-space. They can be compressed more aggressively by using the `best_compression`
-<<index-codec,codec>>.
+<<mapping-all-field,`_all`>> 字段索引文档的所有字段的值，占用大量空间。 如果您不需要同时搜索所有字段，则可以禁用它。
 
 [float]
-=== Force Merge
+=== 关闭 `_source`
 
-Indices in Elasticsearch are stored in one or more shards. Each shard is a Lucene index and made up of one or more segments - the actual files on disk. Larger segments are more efficient for storing data.
+<<mapping-source-field,`_source`>> 字段存储文档的原始 JSON 主体。 如果您不需要访问它，您可以禁用它。 但是，需要访问 `_source` 的 API（如 update 和 reindex ）将不起作用。
 
-The <<indices-forcemerge,`_forcemerge` API>> can be used to reduce the number of segments per shard. In many cases, the number of segments can be reduced to one per shard by setting `max_num_segments=1`.
+[float]
+=== 使用 `best_compression`
+
+`_source` 和存储字段很容易占用不可忽略的磁盘空间。 通过使用 `best_compression` <<index-codec,codec>> 可以更高效的压缩它们。
+
+[float]
+=== 强制合并
+
+Elasticsearch 中的索引存储在一个或多个分片中。 每个分片都是一个 Lucene 索引，由一个或多个段组成 - 磁盘上的实际文件。 较大的段文件能更有效的存储数据。
+
+<<indices-forcemerge,`_forcemerge` API>> 可用于减少每个分片的段总数。 在许多情况下，通过设置 `max_num_segments=1`，可以将每个分片的段总数减少到一个。
 
 [float]
 === Shrink Index
 
-The <<indices-shrink-index,Shrink API>> allows you to reduce the number of shards in an index. Together with the Force Merge API above, this can significantly reduce the number of shards and segments of an index.
+<<indices-shrink-index,Shrink API>> 允许您减少索引中的分片数。 与上面的 Force Merge API 一起，这可以显着减少索引中的分片和段的数量。
 
 [float]
-=== Use the smallest numeric type that is sufficient
+=== 使用恰好满足的最小数字类型
 
-The type that you pick for <<number,numeric data>> can have a significant impact
-on disk usage. In particular, integers should be stored using an integer type
-(`byte`, `short`, `integer` or `long`) and floating points should either be
-stored in a `scaled_float` if appropriate or in the smallest type that fits the
-use-case: using `float` over `double`, or `half_float` over `float` will help
-save storage.
+您为 <<number,numeric data>> 选择的类型会对磁盘使用量产生重大影响。 特别是，整数应该使用整数类型 (`byte`, `short`, `integer` or `long`)存储，浮点应该存储在 `scaled_float` 中，如果合适的话，或者存储在适合的最小类型中。 用例：在 `double` 上使用 `float` ，或在 `float` 上使用 `half_float` 将有助于节省存储空间。
 
 [float]
-=== Use index sorting to colocate similar documents
+=== 使用索引排序来合并类似的文档
 
-When Elasticsearch stores `_source`, it compresses multiple documents at once
-in order to improve the overall compression ratio. For instance it is very
-common that documents share the same field names, and quite common that they
-share some field values, especially on fields that have a low cardinality or
-a https://en.wikipedia.org/wiki/Zipf%27s_law[zipfian] distribution.
+当 Elasticsearch 存储 `_source` 时，它会一次压缩多个文档，以提高整体压缩比。 例如，文档共享相同的字段名称是非常常见的，并且它们共享一些字段值非常常见，尤其是在基数较低的字段或 https://en.wikipedia.org/wiki/Zipf%27s_law[zipfian] 分布。
 
-By default documents are compressed together in the order that they are added
-to the index. If you enabled <<index-modules-index-sorting,index sorting>>
-then instead they are compressed in sorted order. Sorting documents with similar
-structure, fields, and values together should improve the compression ratio.
+默认情况下，文档按照添加到索引的顺序压缩在一起。 如果您启用了 <<index-modules-index-sorting,index sorting>>，那么它们将按排序顺序进行压缩。 对具有相似结构，字段和值的文档进行排序可以提高压缩比。
 
 [float]
-=== Put fields in the same order in documents
+=== 在文档中以相同的顺序放置字段
 
-Due to the fact that multiple documents are compressed together into blocks,
-it is more likely to find longer duplicate strings in those `_source` documents
-if fields always occur in the same order.
+由于多个文档被压缩成块，因此如果字段总是以相同的顺序出现，则更有可能在那些 `_source` 文档中找到更长的重复字符串。
